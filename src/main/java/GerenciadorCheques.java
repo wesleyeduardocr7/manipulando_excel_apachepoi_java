@@ -5,8 +5,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -61,7 +59,6 @@ public class GerenciadorCheques {
     public List<?> toList(Iterator<?> iterator){
         return IteratorUtils.toList(iterator);
     }
-
 
     public void imprimir(List<Cheque> cheques){
         cheques.forEach(System.out::println);

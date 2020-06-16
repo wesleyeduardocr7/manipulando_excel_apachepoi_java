@@ -1,8 +1,15 @@
+import java.io.IOException;
+import java.util.List;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        GerenciadorCheques cheques = new GerenciadorCheques();
+        GerenciadorCheques gerenciadorCheques = new GerenciadorCheques();
+
+        List<Cheque> cheques = gerenciadorCheques.criar();
+
+        gerenciadorCheques.imprimir(cheques);
 
     }
 

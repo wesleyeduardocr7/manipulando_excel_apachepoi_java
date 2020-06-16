@@ -33,9 +33,10 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("Informe o nome para o  arquivo");
+                    System.out.print("Informe o nome para o  arquivo: ");
                     String nomeArquivo = sc.next();
                     gerenciadorCheques.criaArquivoExcel(nomeArquivo);
+                    System.out.println("\nArquivo criado com Sucesso!\n");
                     break;
 
                 default:

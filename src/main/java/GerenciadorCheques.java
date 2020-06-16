@@ -1,20 +1,15 @@
 import lombok.Cleanup;
 import org.apache.commons.collections4.IteratorUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class GerenciadorCheques {
+
+    private Scanner sc = new Scanner(System.in);
 
     public List<Cheque> criar() throws IOException {
 
@@ -22,13 +17,13 @@ public class GerenciadorCheques {
 
         @Cleanup FileInputStream file = new FileInputStream("src/main/resources/controle_cheques.xlsx");
         Workbook workbook = new XSSFWorkbook(file);
-        Sheet sheet =  workbook.getSheetAt(0);
+        Sheet sheet = workbook.getSheetAt(0);
 
         List<Row> rows = (List<Row>) toList(sheet.iterator());
 
         rows.remove(0);
 
-        rows.forEach(row ->{
+        rows.forEach(row -> {
 
             List<Cell> cells = (List<Cell>) toList(row.cellIterator());
 
@@ -36,7 +31,7 @@ public class GerenciadorCheques {
 
                     .data(cells.get(0).getDateCellValue())
 
-                    .numeroCheque( (int)cells.get(1).getNumericCellValue())
+                    .numeroCheque((int) cells.get(1).getNumericCellValue())
 
                     .nome(cells.get(2).getStringCellValue())
 
@@ -44,7 +39,7 @@ public class GerenciadorCheques {
 
                     .status(cells.get(4).getStringCellValue())
 
-                    .qtParcelas( (int)cells.get(5).getNumericCellValue())
+                    .qtParcelas((int) cells.get(5).getNumericCellValue())
 
                     .formulaGeral(cells.get(6).getCellFormula())
 
@@ -54,36 +49,73 @@ public class GerenciadorCheques {
 
         });
 
-        return  cheques;
+        return cheques;
     }
 
 
-    public List<?> toList(Iterator<?> iterator){
-        return IteratorUtils.toList(iterator);
-    }
+    public void criaArquivoExcel(String nomeArquivo) {
 
-    public void imprimir(List<Cheque> cheques){
-        cheques.forEach(System.out::println);
-    }
+        Workbook workbook = new XSSFWorkbook();
 
+        criaPlanilha(workbook);
 
-    public void criaArquivoExcel(String nomeArquivo) throws FileNotFoundException {
-
-        Workbook wb = new XSSFWorkbook();
-
-        Sheet pag1 = wb.createSheet("pag1");
-
-        try (OutputStream fileOut =  new FileOutputStream("src/main/resources/"+nomeArquivo+".xlsx")) {
-            wb.write(fileOut);
+        try (OutputStream fileOut = new FileOutputStream("src/main/resources/" + nomeArquivo + ".xlsx")) {
+            workbook.write(fileOut);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
+    public void criaPlanilha(Workbook workbook) {
 
+        System.out.print("Informe o nome da Planilha: ");
+
+        String nomePlanilha = sc.next();
+
+        Sheet sheet = workbook.createSheet(nomePlanilha);
+
+        criaLinha(sheet);
+
+    }
+
+    public void criaLinha(Sheet sheet) {
+
+        Row row = sheet.createRow(0);
+
+        System.out.println("Para realização de Testes foi criado para UMA LINHA na planilha = " + sheet.getSheetName());
+
+        criaCelulas(row);
+
+    }
+
+    public void criaCelulas(Row row) {
+
+        System.out.print("Informe a quantidade e Células:");
+
+        int quantidadeCelulas = sc.nextInt();
+
+        for (int posicao = 0; posicao < quantidadeCelulas; posicao++) {
+            insereUmaCelula(row, posicao);
+        }
+    }
+
+    public void insereUmaCelula(Row row, Integer posicao) {
+
+        System.out.print("Informe o texto da celula na posicao = " + (posicao + 1) + " : ");
+        Cell cell = row.createCell(posicao);
+        String textoCelula = sc.next();
+        cell.setCellValue(textoCelula);
+
+    }
+
+    public List<?> toList(Iterator<?> iterator) {
+        return IteratorUtils.toList(iterator);
+    }
+
+    public void imprimir(List<Cheque> cheques) {
+        cheques.forEach(System.out::println);
+    }
 
 
 }

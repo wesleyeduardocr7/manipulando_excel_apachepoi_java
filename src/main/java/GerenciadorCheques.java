@@ -1,12 +1,14 @@
 import lombok.Cleanup;
 import org.apache.commons.collections4.IteratorUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -63,5 +65,25 @@ public class GerenciadorCheques {
     public void imprimir(List<Cheque> cheques){
         cheques.forEach(System.out::println);
     }
+
+
+    public void criaArquivoExcel(String nomeArquivo) throws FileNotFoundException {
+
+        Workbook wb = new XSSFWorkbook();
+
+        Sheet pag1 = wb.createSheet("pag1");
+
+        try (OutputStream fileOut =  new FileOutputStream("src/main/resources/"+nomeArquivo+".xlsx")) {
+            wb.write(fileOut);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+
 
 }

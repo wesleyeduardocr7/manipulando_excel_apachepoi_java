@@ -15,8 +15,8 @@ public class Main {
 
         do {
 
-            System.out.println("1 - Ler e impririr dados do arquivo xlsx");
-            System.out.println("2 - Criar e escrever no arquivo xlsx");
+            System.out.println("1 - Ler e impririr dados do arquivo XLSX");
+            System.out.println("2 - Criar e escrever no arquivo XLSX");
             System.out.println("0 - Sair");
 
             op = sc.nextInt();
